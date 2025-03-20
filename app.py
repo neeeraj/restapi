@@ -7,10 +7,15 @@ app = Flask(__name__)
 def home():
     return "Flask API is running!"
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
-    data = request.json
+    if request.method == 'GET':
+        data = request.args.get("data")  # ✅ GET request ke liye
+    else:
+        data = request.json.get("data")  # ✅ POST request ke liye
+
     return jsonify({"message": f"Received: {data}"})
+
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))  # ✅ Render ke PORT variable ko use karo
